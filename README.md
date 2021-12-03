@@ -29,6 +29,9 @@ to understand their semantics.
 
 ## Install
 ```bash
+# Note: for these dependencies to install properly I had to set up an environment with Python 3.7.11 instead of 3.9.5 (minor versions likely unimportant)
+# conda create -n py37 python=3.7
+
 # (Recommended) Create a virtual environment
 virtualenv --python=python3 env
 source env/bin/activate
