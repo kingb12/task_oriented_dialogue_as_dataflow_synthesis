@@ -36,7 +36,7 @@ else
   unzip ${glove_840b_dir}/glove.840B.300d.zip -d ${glove_840b_dir}
 fi
 
-embeddings_file=${onmt_embeddings_dir}/embeddings
+embeddings_file=${onmt_embeddings_dir}/embeddings.enc.pt
 
 
 if [ -f "${embeddings_file}" ]; then

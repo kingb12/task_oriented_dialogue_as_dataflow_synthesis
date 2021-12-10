@@ -2,6 +2,9 @@ data_root="/scratchdata/bking2/tod_as_df_synthesis/multiwoz"
 onmt_text_data_dir="${data_root}/output/onmt_text_data"
 onmt_data_stats_dir="${data_root}/output/onmt_data_stats"
 onmt_binarized_data_dir="${data_root}/output/onmt_binarized_data"
+glove_6b_dir="${data_root}/output/glove_6b"
+onmt_embeddings_dir="${data_root}/output/onmt_embeddings"
+onmt_models_dir="${data_root}/output/onmt_models_multiwoz"
 
 mkdir -p "${onmt_binarized_data_dir}"
 
@@ -22,20 +25,29 @@ onmt_preprocess \
     --save_data ${onmt_binarized_data_dir}/data
 
 # extract pretrained Glove 6B embeddings
-glove_6b_dir="output/glove_6b"
-mkdir -p "${glove_6b_dir}"
-wget -O ${glove_6b_dir}/glove.6B.zip http://nlp.stanford.edu/data/glove.6B.zip
-unzip ${glove_6b_dir}/glove.6B.zip -d ${glove_6b_dir}
+mkdir -p ${glove_6b_dir}
+glove_zip_file=${glove_6b_dir}/glove.6B.zip
 
-onmt_embeddings_dir="output/onmt_embeddings"
+if [ -f "${glove_zip_file}" ]; then
+    echo "${glove_zip_file} exists."
+else
+  wget -O ${glove_6b_dir}/glove.6B.zip http://nlp.stanford.edu/data/glove.6B.zip
+  unzip ${glove_6b_dir}/glove.6B.zip -d ${glove_6b_dir}
+fi
+
 mkdir -p "${onmt_embeddings_dir}"
-python -m dataflow.onmt_helpers.embeddings_to_torch \
-    -emb_file_both ${glove_6b_dir}/glove.6B.300d.txt \
-    -dict_file ${onmt_binarized_data_dir}/data.vocab.pt \
-    -output_file ${onmt_embeddings_dir}/embeddings
 
+# there are two technically, bad behavior on incomplete runs
+embeddings_file=${onmt_embeddings_dir}/embeddings.enc.pt
+if [ -f "${embeddings_file}" ]; then
+    echo "${embeddings_file} exists."
+else
+  python -m dataflow.onmt_helpers.embeddings_to_torch \
+      -emb_file_both ${glove_6b_dir}/glove.6B.300d.txt \
+      -dict_file ${onmt_binarized_data_dir}/data.vocab.pt \
+      -output_file ${onmt_embeddings_dir}/embeddings
+fi
 # train OpenNMT models
-onmt_models_dir="output/onmt_models"
 mkdir -p "${onmt_models_dir}"
 
 batch_size=64
