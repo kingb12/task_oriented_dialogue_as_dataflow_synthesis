@@ -178,6 +178,15 @@ def execute_program_for_turn(
     partial_execution_result = PartialExecutionResult(
         values=dict(), constraints=dict(), refer_calls=dict(), slot_values=dict(),
     )
+    """
+    Notes: 
+    - a Turn object has a program, built on the fly by converting the annotated lispress to a Program object
+    - an Expression is a line in a program declaring a value, building an object, or calling a function
+    - a Salience Model is needed for "Refer" operations: it finds the salient object being referred to in a prior 
+      execution (their base model I believe just finds the most recent one that type checks)
+    - last_execution_trace:
+    - For each expression in this program:
+    """
     for expression in curr_turn.program().expressions:
         partial_execution_result = execute_expression(
             expression=expression,

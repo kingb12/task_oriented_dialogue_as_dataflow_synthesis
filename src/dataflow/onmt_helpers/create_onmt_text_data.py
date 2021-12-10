@@ -156,8 +156,8 @@ def create_onmt_text_datum_for_turn(
     tgt_str = " ".join(curr_turn.tokenized_lispress())
 
     # make sure there are not consecutive spaces in the tokenized sequence
-    assert re.search(r"\s{2,}", src_tok_str) is None
-    assert re.search(r"\s{2,}", tgt_str) is None
+    assert re.search(r"\s{2,}", src_tok_str) is None, f"Source: {src_tok_str}"
+    assert re.search(r"\s{2,}", tgt_str) is None, f"Target: {tgt_str}"
 
     return OnmtTextDatum(
         datum_id_str=datum_id_str,
@@ -227,14 +227,20 @@ def main(
         dialogue: Dialogue
         dialogue = jsons.loads(line.strip(), Dialogue)
 
-        for onmt_text_datum in create_onmt_text_data_for_dialogue(
+        try:
+            onmt_dialogue_text_data =  create_onmt_text_data_for_dialogue(
             dialogue=dialogue,
             num_context_turns=num_context_turns,
             min_turn_index=min_turn_index,
             include_program=include_program,
             include_agent_utterance=include_agent_utterance,
             include_described_entities=include_described_entities,
-        ):
+            )
+        # these seem to occur occasionally with bad parses. For now, I don't need a dialogue if it causes issues here
+        except AssertionError as e:
+            print(e)
+            continue
+        for onmt_text_datum in onmt_dialogue_text_data:
             for field_name, field_value in dataclasses.asdict(onmt_text_datum).items():
                 fp = fps[field_name]
                 fp.write(field_value)
