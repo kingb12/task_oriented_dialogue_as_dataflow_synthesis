@@ -3,7 +3,7 @@ onmt_data_stats_dir="output/onmt_data_stats_v2"
 onmt_text_data_dir="output/onmt_text_data_v2"
 
 mkdir -p "${onmt_translate_outdir}"
-
+# TODO: depends on training, and should a variable if we could also write predictions to a distinct, predictable place
 onmt_model_pt="/scratchdata/bking2/tod_as_df_synthesis/output/onmt_models_v2/checkpoint_step_9130.pt"
 nbest=5
 tgt_max_ntokens=$(jq '."100"' ${onmt_data_stats_dir}/train.tgt.ntokens_stats.json)

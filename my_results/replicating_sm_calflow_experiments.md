@@ -44,7 +44,7 @@ scripts in the following order:
 - `bash scripts/v2/example_evaluation_v2.sh`
 
 This outputs a number of things over each script (models, processed data, predictions, evaluation metrics, etc.). Follow
-the analagous steps in the README for a better understanding (scripts are just modifications so that each step can be 
+the analogous steps in the README for a better understanding (scripts are just modifications so that each step can be 
 run like above.)
 
 ## Results
