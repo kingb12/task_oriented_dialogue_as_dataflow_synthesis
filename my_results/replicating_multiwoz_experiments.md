@@ -36,11 +36,27 @@ run like above.)
 
 ## Results
 
-The top-level metrics from evaluation are in `TODO`, and roughly match the 
-accuracies reported in [Table 3](https://arxiv.org/abs/2009.11423). 
+The top-level metrics from evaluation are in `/scratchdata/bking2/tod_as_df_synthesis/multiwoz/output/belief_state_tracker_eval/test.scores.json`, and match the 
+accuracies reported in [Table 3](https://arxiv.org/abs/2009.11423) nearly exactly. Note that this replication as-is reproduces *only the first row* in the table. Different training and data preparation arguments can reproduce rows 2 and 3. I believe the final row is an evaluation of a public version of the original TRADE model and makes no use of Dataflow. It may be evaluable through the same steps described here.
 
 ```json
 {
-  "TODO": "results"
+  "accuracy": 0.46742671009771986,
+  "accuracy_for_slot": {
+    "...": "..."
+  },
+  "ave_num_turns_before_first_error": 3.055055055055055,
+  "num_correct_dialogues": 229,
+  "num_correct_turns": 3444,
+  "num_correct_turns_after_first_error": 392,
+  "num_correct_turns_for_slot": {
+    "...": "..."
+  },
+  "num_total_dialogues": 999,
+  "num_total_turns": 7368,
+  "num_turns_before_first_error": 3052,
+  "pct_correct_dialogues": 0.22922922922922923
 }
 ```
+Where **Joint Accuracy** is given by `accuracy`, **Dialogue** level accuracy is given by `pct_correct_dialogues`, and **Prefix** corresponds to `ave_num_turns_before_first_error`.
+
