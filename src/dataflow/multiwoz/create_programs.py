@@ -495,6 +495,8 @@ def create_programs_for_trade_dialogue(
     ].strip(), "the leading agent utterance should be empty"
 
     for turn_index, trade_turn in enumerate(trade_turns):
+        # takes input (nested dictionary format) and flat dict of fully qualified slot names to values, e.g:
+        # {'hotel-area': 'east', 'hotel-stars': '4'}
         curr_belief_dict = flatten_belief_state(
             belief_state=trade_turn["belief_state"],
             keep_all_domains=keep_all_domains,
